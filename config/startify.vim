@@ -79,11 +79,13 @@ function PerformAction()
 		execute ':cd ~'
 		execute ':Telescope find_files'
 	elseif s:cur == 2
-		return
+		execute ':bw'
+		execute ':tab help'
 	elseif s:cur == 3
+		execute ':bw'
 		execute ':edit ~\appdata\local\nvim\init.vim'
 	elseif s:cur == 4
-		execute ':cd c:\projetos\programação'
+		execute ':cd ~\documents\projetos\programação'
 		execute ':Telescope find_files'
 	endif
 endfunction
