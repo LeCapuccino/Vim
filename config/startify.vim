@@ -7,10 +7,10 @@ let s:screen = ['                                __                 ',
 			\	'                                                   ',
 			\	' Actions                                           ',
 			\	'                                                   ',
-			\	' [•] New File                                      ',
-			\	' [•] New Folder                                    ',
-			\	'                                                   ',
+			\	' [•] New File or Folder                            ',
 			\	' [•] File Manager                                  ',
+			\	'                                                   ',
+			\	' [•] Help                                          ',
 			\	'                                                   ',
 			\	' Files                                             ',
 			\	'                                                   ',
@@ -73,12 +73,13 @@ endfunction
 
 function PerformAction()
 	if s:cur == 0
-		return
+		execute ':cd ~'
+		execute ':Telescope file_browser'
 	elseif s:cur == 1
-		return
-	elseif s:cur == 2
 		execute ':cd ~'
 		execute ':Telescope find_files'
+	elseif s:cur == 2
+		return
 	elseif s:cur == 3
 		execute ':edit ~\appdata\local\nvim\init.vim'
 	elseif s:cur == 4
@@ -140,7 +141,7 @@ endfunction
 
 function Syntax()
 	syntax keyword StartifyAction Actions Files Folders
-	syntax keyword StartifyName   New File Folder Manager Settings Projects
+	syntax keyword StartifyName   New File Folder Manager Settings Projects Help or
 	syntax keyword StartifyPath   appdata local nvim init vim projetos programação c
 
 	syntax match StartifyPoint  '•'
@@ -168,6 +169,8 @@ function Start()
 	endif
 
 	enew
+
+	file AVerySpecificNameToAvoidConfusions
 
 	call EnabledPlugins(v:false)
 
@@ -209,12 +212,14 @@ function Start()
 endfunction
 
 function Finish()
-	call SetStatusLine()
-	call EnabledPlugins(v:true)
+	if bufwinnr('AVerySpecificNameToAvoidConfusions') == -1
+		call SetStatusLine()
+		call EnabledPlugins(v:true)
+	endif
 endfunction
 
 augroup startify
-	autocmd! * <buffer>
+	autocmd!
 	autocmd VimEnter * call Start()
-	autocmd BufLeave * call Finish()
+	autocmd BufEnter * call Finish()
 augroup end
