@@ -1,0 +1,1 @@
+" --------------- Shade Plugin Functions
