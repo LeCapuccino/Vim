@@ -55,7 +55,19 @@ function ChangeBrightness(color, increase)
 	let l:red   = DecToHex(LimitValue(l:red,   0, 255))
 	let l:green = DecToHex(LimitValue(l:green, 0, 255))
 	let l:blue  = DecToHex(LimitValue(l:blue,  0, 255))
+	
+	if len(l:red) == 1
+		let l:red = '0' .. l:red
+	endif
 
+	if len(l:green) == 1
+		let l:green ='0' .. l:green
+	endif
+
+	if len(l:blue) == 1
+		let l:blue = '0' .. l:blue
+	endif
+		
 	return '#' .. l:red .. l:green .. l:blue
 endfunction
 
@@ -139,7 +151,7 @@ endfunction
 
 augroup setnamefile
 	autocmd!
-	autocmd BufEnter * call SetFileName()
+	autocmd VimEnter,WinEnter,BufEnter,BufWinEnter * call SetFileName()
 augroup end
 
 function SetStatusLine()
@@ -157,10 +169,7 @@ function inactive()
 end
 EOF
 
-if g:nametheme == 'Dracula'     ||
-\  g:nametheme == 'Aquarium'    || g:nametheme == 'Dogrun'      ||
-\  g:nametheme == 'Rose [Base]' || g:nametheme == 'Rose [Moon]' || 
-\  g:nametheme == 'Iceberg'     || g:nametheme == 'Sobrio'
+if g:nametheme[0:3] == 'Rose'
 lua << EOF
 require'lualine'.setup {
 	options = {
@@ -172,15 +181,15 @@ require'lualine'.setup {
 	},
 	sections = {
 		lualine_a = {'mode'},
-		lualine_b = {namebuffer, 'filesize'},
+		lualine_b = {'branche', 'diff', namebuffer, 'filesize'},
 		lualine_c = {'filetype'},
-		lualine_x = {'branche', 'diff', nametheme},
+		lualine_x = {nametheme},
 		lualine_y = {'progress'},
 		lualine_z = {'location'}
 	},
 	inactive_sections = {
 		lualine_a = {'mode'},
-		lualine_b = {'filename'},
+		lualine_b = {namebuffer},
 		lualine_c = {},
 		lualine_x = {inactive},
 		lualine_y = {'filetype'},
@@ -210,7 +219,7 @@ require'lualine'.setup {
 	},
 	inactive_sections = {
 		lualine_a = {'mode'},
-		lualine_b = {'filename'},
+		lualine_b = {namebuffer},
 		lualine_c = {},
 		lualine_x = {inactive},
 		lualine_y = {'filetype'},
@@ -230,10 +239,7 @@ function welcome()
 end
 EOF
 
-if g:nametheme == 'Dracula'     ||
-\  g:nametheme == 'Aquarium'    || g:nametheme == 'Dogrun'      ||
-\  g:nametheme == 'Rose [Base]' || g:nametheme == 'Rose [Moon]' || 
-\  g:nametheme == 'Iceberg'     || g:nametheme == 'Sobrio'
+if g:nametheme[0:3] == 'Rose'
 lua << EOF
 require'lualine'.setup {
 	options = {
@@ -294,5 +300,10 @@ function StatusLine()
 	call UpdateColors()
 	call SetColors()
 	call SetTheme()
-	call SetStatusLine()
+
+	if g:initstartup
+		call StartifyLine()
+	else
+		call SetStatusLine()
+	endif
 endfunction

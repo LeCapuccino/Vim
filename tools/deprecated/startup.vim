@@ -33,6 +33,8 @@ let s:pos = [[s:height + 10, s:width + 3],
  
 let s:cur = 0
 
+let g:initstartup = v:false
+
 function MoveCursor(sense)
 	if a:sense
 		let s:cur = s:cur + 1
@@ -184,6 +186,8 @@ function Start()
 	\	norelativenumber
 	\	nolist
 	\	noswapfile
+	
+	set showtabline=0
 
 	syntax enable
 	
@@ -198,7 +202,8 @@ function Start()
 	\	nomodifiable
 	
 	call Syntax()
-	call StartifyLine()
+
+	let g:initstartup = v:true
 
 	nnoremap <buffer><silent> <Left>  :call MoveCursor(v:false) <CR>
 	nnoremap <buffer><silent> <Right> :call MoveCursor(v:true)  <CR>
@@ -206,17 +211,23 @@ function Start()
 	nnoremap <buffer><silent> <Down>  :call MoveCursor(v:true)  <CR>
  
 	nnoremap <silent><buffer> h :call MoveCursor(v:true)  <CR>
-	nnoremap <silent><buffer> l :call MoveCursor(v:true)  <CR>
-	nnoremap <silent><buffer> j :call MoveCursor(v:false) <CR>
-	nnoremap <silent><buffer> k :call MoveCursor(v:true)  <CR>
+	nnoremap <silent><buffer> j :call MoveCursor(v:true)  <CR>
+	nnoremap <silent><buffer> k :call MoveCursor(v:false) <CR>
+	nnoremap <silent><buffer> l :call MoveCursor(v:false) <CR>
  
 	nnoremap <silent><buffer> <Enter> :call PerformAction() <CR>
 endfunction
 
 function Finish()
 	if bufwinnr('AVerySpecificNameToAvoidConfusions') == -1
-		call SetStatusLine()
 		call EnabledPlugins(v:true)
+
+		let g:initstartup = v:false
+
+		set showtabline=2
+
+		call UpdateThemeVariation()
+		call UpdateTheme()
 	endif
 endfunction
 

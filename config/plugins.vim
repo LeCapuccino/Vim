@@ -4,18 +4,11 @@ call plug#begin(stdpath('data') . '/plugged')
 
 " ---------- Color Themes
 
-Plug 'dracula/vim'
 Plug 'sainnhe/edge'
 Plug 'morhetz/gruvbox'
 Plug 'sainnhe/sonokai'
 Plug 'rose-pine/neovim'
-Plug 'elvessousa/sobrio'
-Plug 'cocopon/iceberg.vim'
-Plug 'wadackel/vim-dogrun'
 Plug 'shaunsingh/nord.nvim'
-Plug 'mhartington/oceanic-next'
-Plug 'FrenzyExists/aquarium-vim'
-Plug 'drewtempelmeyer/palenight.vim'
 
 " ---------- Color Highlight
 
@@ -23,27 +16,36 @@ Plug 'norcalli/nvim-colorizer.lua'
 
 " ---------- Shades
 
-Plug 'sunjon/shade.nvim'
 Plug 'folke/twilight.nvim'
-
-" ---------- Status Bar
-
-Plug 'shadmansaleh/lualine.nvim'
 
 " ---------- Icons
 
+Plug 'ryanoasis/vim-devicons'
 Plug 'kyazdani42/nvim-web-devicons'
-Plug 'yamatsum/nvim-nonicons'
+
+" ---------- File Tree
+
+Plug 'kyazdani42/nvim-tree.lua'
+
+" ---------- Symbols and Tags Visualizer
+
+Plug 'liuchengxu/vista.vim'
 
 " ---------- Language Server Protocol
 
+Plug 'glepnir/lspsaga.nvim'
 Plug 'neovim/nvim-lspconfig'
+Plug 'williamboman/nvim-lsp-installer'
 
 " ---------- Autocompletation
 
 Plug 'ms-jpq/coq_nvim',       {'branch': 'coq'}
 Plug 'ms-jpq/coq.artifacts',  {'branch': 'artifacts'}
 Plug 'ms-jpq/coq.thirdparty', {'branch': '3p'}
+
+" ---------- Cursor
+
+Plug 'mg979/vim-visual-multi'
 
 " ---------- Treesitter
 
@@ -54,11 +56,12 @@ Plug 'ms-jpq/coq.thirdparty', {'branch': '3p'}
 Plug 'nvim-telescope/telescope.nvim'
 Plug 'nvim-telescope/telescope-fzf-native.nvim', {'do': 'make'}
 
-Plug 'junegunn/fzf', {'do': {-> fzf#install()}}
+" ---------- Auto Pairs
+
+Plug 'windwp/nvim-autopairs'
 
 " ---------- Other
 
 Plug 'nvim-lua/plenary.nvim'
-Plug 'lukas-reineke/indent-blankline.nvim'
 
 call plug#end()

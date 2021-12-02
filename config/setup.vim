@@ -6,11 +6,16 @@ set number
 set relativenumber
 set cursorline
 set termguicolors
+set noshowmode
 
 set tabstop=4
 set softtabstop=4
 set shiftwidth=4
 set noexpandtab
+
+set encoding=UTF-8
+
+set guifont=Fira_Code_Nerd_Font
 
 " --------------- Setup Variables ---------------
 

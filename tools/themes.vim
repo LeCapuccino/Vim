@@ -1,30 +1,18 @@
+" -------------- Themes Functions --------------
+
 let s:memory = stdpath('data') . '\memory.txt'
 
 let s:themes = ["Gruvbox",
-			   \"Oceanic",
 			   \"Sonokai",
-			   \"Palenight",
 			   \"Edge",
-			   \"Dracula",
-			   \"Aquarium",
-			   \"Dogrun",
-			   \"Rose",
 			   \"Nord",
-			   \"Iceberg",
-			   \"Sobrio"]
+			   \"Rose"]
 
 let s:namethemes = ["gruvbox",
-				   \"OceanicNext",
                    \"sonokai",
-                   \"palenight",
                    \"edge",
-                   \"dracula",
-                   \"aquarium",
-                   \"dogrun",
-                   \"rose-pine",
                    \"nord",
-                   \"iceberg",
-                   \"sobrio"]
+                   \"rose-pine"]
 
 let s:modes = [['soft', 'medium', 'hard'],
 			  \['default', 'atlantis', 'andromeda', 'shusia', 'maia', 'espresso'],
@@ -45,17 +33,17 @@ let g:nametheme = ''
 
 function MemorizeTheme()
 	if !filereadable(s:memory)
-		:call writefile([0, 0, 0], s:memory, "a")
+		call writefile([0, 0, 0], s:memory, "a")
 	else
-		:call delete(s:memory)
-		:call writefile([s:theme, s:position, s:mode[s:position]], s:memory, "a")
+		call delete(s:memory)
+		call writefile([s:theme, s:position, s:mode[s:position]], s:memory, "a")
 	endif
 endfunction
 
 function ShowTheme()
 	let l:out = s:themes[s:theme]
 	
-	if s:themes[s:theme] == "Gruvbox"  || s:themes[s:theme] == "Sonokai"  || 
+	if s:themes[s:theme] == "Gruvbox"  || s:themes[s:theme] == "Sonokai"  ||
 	\  s:themes[s:theme] == "Edge"     || s:themes[s:theme] == "Rose"	
 		let l:out = l:out . " ["
 		let l:out = l:out . toupper(s:modes[s:position][s:mode[s:position]][0]) 
@@ -67,21 +55,29 @@ function ShowTheme()
 endfunction
 
 function UpdateTheme()
-	:execute 'colorscheme ' . s:namethemes[s:theme]	
+	execute 'colorscheme ' . s:namethemes[s:theme]	
 
-	:call ShowTheme()
-	:call StatusLine()
+	call ShowTheme()
+
+	call SetStatusLineColors()
+	call SetFileExplorerColors()
+	call SetFileExplorerStatusLineColors()
+	call SetBufferLineColors()
+	call SetTerminalColors()
+	call SetCursorLineColor()
 endfunction
 
 function UpdateThemeVariation()
+	let l:variation = s:modes[s:position][s:mode[s:position]]
+
 	if s:themes[s:theme] == "Gruvbox"
-		let g:gruvbox_contrast_dark = s:modes[0][s:mode[0]]
+		let g:gruvbox_contrast_dark = l:variation
 	elseif s:themes[s:theme] == "Sonokai"
-		let g:sonokai_style = s:modes[1][s:mode[1]]
+		let g:sonokai_style = l:variation
 	elseif s:themes[s:theme] == "Edge"
-		let g:edge_style = s:modes[2][s:mode[2]]
+		let g:edge_style = l:variation
 	elseif s:themes[s:theme] == "Rose"
-		let g:rose_pine_variant = s:modes[3][s:mode[3]]
+		let g:rose_pine_variant = l:variation
 	endif
 endfunction
 
@@ -111,15 +107,15 @@ function ChangeTheme(way)
 			let s:position = 3
 		endif
 
-		:call UpdateThemeVariation()
-		:call UpdateTheme()
+		call UpdateThemeVariation()
+		call UpdateTheme()
 	else
 		let s:theme = 0
 
-		:execute 'colorscheme ' . s:namethemes[s:theme]	
+		execute 'colorscheme ' . s:namethemes[s:theme]	
 	endif
 
-	:call MemorizeTheme()
+	call MemorizeTheme()
 endfunction
 
 function ChangeThemeVariation(way)
@@ -137,10 +133,15 @@ function ChangeThemeVariation(way)
 		endif
 	endif
 
-	:call UpdateThemeVariation()
-	:call UpdateTheme()
+	call UpdateThemeVariation()
+	call UpdateTheme()
 
-	:call MemorizeTheme()
+	call MemorizeTheme()
+endfunction
+
+function UpTheme()
+	call UpdateThemeVariation()
+	call UpdateTheme()
 endfunction
 
 " --------------- Map Keys
